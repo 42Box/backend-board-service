@@ -21,7 +21,7 @@ public interface BoardsController<RES_GET, RES_PUT, RES_GET_PAGE, SEARCH_CONDITI
 
   ResponseEntity<Void> deleteBoards(HttpServletRequest request, Long boardId);
 
-  ResponseEntity<RES_GET_PAGE> getBoards(Pageable pageable, Long mainCursor, Long cursor,
-      String search, SEARCH_CONDITION searchCondition, boolean isNext);
+  ResponseEntity<RES_GET_PAGE> getBoards(Pageable pageable, String search,
+      SEARCH_CONDITION searchCondition);
 
 }

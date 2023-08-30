@@ -7,6 +7,7 @@ import com.practice.boxboardservice.entity.script_boards.ScriptBoardsEntity;
 import com.practice.boxboardservice.repository.script_boards.dto.QScriptBoardsPageResultDto;
 import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageConditionDto;
 import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageResultDto;
+import com.practice.boxboardservice.repository.script_boards.type.ScriptSearchCondition;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -47,21 +48,11 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
           case "likeCount":
             return new OrderSpecifier<>(direction, scriptBoardsEntity.likeCount);
           default:
-            return new OrderSpecifier<>(direction, scriptBoardsEntity.id);
+            return new OrderSpecifier<>(direction, scriptBoardsEntity.regDate);
         }
       }
     }
-    return new OrderSpecifier<>(Order.DESC, scriptBoardsEntity.id);
-  }
-
-  private OrderSpecifier<?> idSort(Pageable pageable) {
-    if (!pageable.getSort().isEmpty()) {
-      for (Sort.Order order : pageable.getSort()) {
-        Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
-        return new OrderSpecifier<>(direction, scriptBoardsEntity.id);
-      }
-    }
-    return new OrderSpecifier<>(Order.DESC, scriptBoardsEntity.id);
+    return new OrderSpecifier<>(Order.DESC, scriptBoardsEntity.regDate);
   }
 
   @Override
@@ -84,100 +75,63 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
             )
         ).from(scriptBoardsEntity)
         .where(
-            mainCursorCondition(pageable, condition),
-            cursorCondition(pageable, condition)
+            titleSearch(condition),
+            contentSearch(condition),
+            nicknameSearch(condition),
+            scriptSearch(condition)
         )
         .orderBy(
-            mainSort(pageable),
-            idSort(pageable)
+            mainSort(pageable)
         )
+        .offset((long) pageable.getPageNumber() * pageable.getPageSize())
         .limit(pageable.getPageSize())
         .fetch();
 
     JPAQuery<ScriptBoardsEntity> countQuery = queryFactory
         .selectFrom(scriptBoardsEntity)
         .where(
-            mainCursorCondition(pageable, condition),
-            cursorCondition(pageable, condition)
+            titleSearch(condition),
+            contentSearch(condition),
+            nicknameSearch(condition),
+            scriptSearch(condition)
         );
-    Page<ScriptBoardsPageResultDto> page = PageableExecutionUtils.getPage(content, pageable,
+    return PageableExecutionUtils.getPage(content, pageable,
         countQuery.fetch()::size);
-    return page;
   }
 
-  private BooleanExpression IdSortCondition(Pageable pageable,
-      ScriptBoardsPageConditionDto condition) {
-    if (condition.getIsNext()) {
-      return scriptBoardsEntity.id.lt(condition.getCursor());
+  private BooleanExpression titleSearch(ScriptBoardsPageConditionDto condition) {
+    if (!condition.getSearch().isEmpty() && (
+        condition.getSearchCondition() == ScriptSearchCondition.ALL
+            || condition.getSearchCondition() == ScriptSearchCondition.TITLE)) {
+      return scriptBoardsEntity.title.contains(condition.getSearch());
     }
-    return scriptBoardsEntity.id.gt(condition.getCursor());
+    return null;
   }
 
-  private BooleanExpression cursorCondition(Pageable pageable,
-      ScriptBoardsPageConditionDto condition) {
-    if (condition.getCursor() == 0) {
-      return null;
+  private BooleanExpression contentSearch(ScriptBoardsPageConditionDto condition) {
+    if (!condition.getSearch().isEmpty() && (
+        condition.getSearchCondition() == ScriptSearchCondition.ALL
+            || condition.getSearchCondition() == ScriptSearchCondition.CONTENT)) {
+      return scriptBoardsEntity.content.contains(condition.getSearch());
     }
-    Order direction = Order.DESC;
-    for (Sort.Order order : pageable.getSort()) {
-      direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
-    }
-    if (direction == Order.DESC) {
-      return condition.getIsNext() ? scriptBoardsEntity.id.lt(condition.getCursor())
-          : scriptBoardsEntity.id.gt(condition.getCursor());
-    }
-    return condition.getIsNext() ? scriptBoardsEntity.id.gt(condition.getCursor())
-        : scriptBoardsEntity.id.lt(condition.getCursor());
+    return null;
   }
 
-  private BooleanExpression mainCursorCondition(Pageable pageable,
-      ScriptBoardsPageConditionDto condition) {
-    if (condition.getMainCursor() == 0) {
-      return null;
+  private BooleanExpression nicknameSearch(ScriptBoardsPageConditionDto condition) {
+    if (!condition.getSearch().isEmpty() && (
+        condition.getSearchCondition() == ScriptSearchCondition.ALL
+            || condition.getSearchCondition() == ScriptSearchCondition.WRITER_NICKNAME)) {
+      return scriptBoardsEntity.writerNickname.contains(condition.getSearch());
     }
-    Order direction = Order.DESC;
-    for (Sort.Order order : pageable.getSort()) {
-      direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
-      switch (order.getProperty()) {
-        case "commentCount": {
-          if (direction == Order.DESC) {
-            return condition.getIsNext() ? scriptBoardsEntity.commentCount.lt(
-                condition.getMainCursor())
-                : scriptBoardsEntity.commentCount.gt(condition.getMainCursor());
-          }
-          return condition.getIsNext() ? scriptBoardsEntity.commentCount.gt(
-              condition.getMainCursor())
-              : scriptBoardsEntity.commentCount.lt(condition.getMainCursor());
-        }
-        case "viewCount": {
-          if (direction == Order.DESC) {
-            return condition.getIsNext() ? scriptBoardsEntity.viewCount.lt(
-                condition.getMainCursor())
-                : scriptBoardsEntity.viewCount.gt(condition.getMainCursor());
-          }
-          return condition.getIsNext() ? scriptBoardsEntity.viewCount.gt(condition.getMainCursor())
-              : scriptBoardsEntity.viewCount.lt(condition.getMainCursor());
-        }
-        case "likeCount": {
-          if (direction == Order.DESC) {
-            return condition.getIsNext() ? scriptBoardsEntity.likeCount.lt(
-                condition.getMainCursor())
-                : scriptBoardsEntity.likeCount.gt(condition.getMainCursor());
-          }
-          return condition.getIsNext() ? scriptBoardsEntity.likeCount.gt(condition.getMainCursor())
-              : scriptBoardsEntity.likeCount.lt(condition.getMainCursor());
-        }
-        default: {
-          if (direction == Order.DESC) {
-            return condition.getIsNext() ? scriptBoardsEntity.id.lt(condition.getMainCursor())
-                : scriptBoardsEntity.id.gt(condition.getMainCursor());
-          }
-          return condition.getIsNext() ? scriptBoardsEntity.id.gt(condition.getMainCursor())
-              : scriptBoardsEntity.id.lt(condition.getMainCursor());
-        }
-      }
+    return null;
+  }
+
+  private BooleanExpression scriptSearch(ScriptBoardsPageConditionDto condition) {
+    if (!condition.getSearch().isEmpty() && (
+        condition.getSearchCondition() == ScriptSearchCondition.ALL
+            || condition.getSearchCondition() == ScriptSearchCondition.SCRIPT_NAME)) {
+      return scriptBoardsEntity.scriptName.contains(condition.getSearch());
     }
-    return condition.getIsNext() ? scriptBoardsEntity.id.lt(condition.getMainCursor())
-        : scriptBoardsEntity.id.gt(condition.getMainCursor());
+    return null;
   }
 }

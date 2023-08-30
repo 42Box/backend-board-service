@@ -15,10 +15,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class ScriptBoardsPageConditionDto {
-
-  private Long mainCursor;
-  private Long cursor;
   private String search;
   private ScriptSearchCondition searchCondition;
-  private Boolean isNext;
 }

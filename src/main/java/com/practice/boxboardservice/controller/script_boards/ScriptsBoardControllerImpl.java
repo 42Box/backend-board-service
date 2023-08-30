@@ -112,21 +112,15 @@ public class ScriptsBoardControllerImpl implements
   @Override
   @GetMapping("")
   public ResponseEntity<Page<ScriptBoardsPageResultDto>> getBoards(
-      @PageableDefault(size = 15, sort = "regDate", direction = Direction.DESC) Pageable pageable,
-      @RequestParam(required = false, defaultValue = "0") Long mainCursor,
-      @RequestParam(required = false, defaultValue = "0") Long cursor,
+      @PageableDefault(page = 0, size = 5, sort = "regDate", direction = Direction.DESC) Pageable pageable,
       @RequestParam(required = false, defaultValue = "") String search,
-      @RequestParam(required = false, defaultValue = "NONE") ScriptSearchCondition searchCondition,
-      @RequestParam(required = false, defaultValue = "true") boolean isNext) {
+      @RequestParam(required = false, defaultValue = "NONE") ScriptSearchCondition searchCondition) {
     ScriptBoardsPageConditionDto conditionDto = ScriptBoardsPageConditionDto.builder()
-        .mainCursor(mainCursor)
-        .cursor(cursor)
         .search(search.trim())
         .searchCondition(searchCondition)
-        .isNext(isNext)
         .build();
     Page<ScriptBoardsPageResultDto> page = scriptBoardsService.findBoards(pageable, conditionDto);
-
+    System.out.println(pageable);
     return ResponseEntity.status(HttpStatus.OK).body(page);
   }
 
