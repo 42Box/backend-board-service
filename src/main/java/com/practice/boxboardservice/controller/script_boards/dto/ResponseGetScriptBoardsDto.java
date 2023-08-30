@@ -1,8 +1,10 @@
 package com.practice.boxboardservice.controller.script_boards.dto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.joda.time.DateTime;
 
 /**
  * ResponseGetBoards.
@@ -25,8 +27,8 @@ public class ResponseGetScriptBoardsDto {
   private String writerNickname;
   private String writerProfileImageUrl;
   private String writerProfileImagePath;
-  private String createdAt;
-  private String updatedAt;
+  private LocalDateTime regDate;
+  private LocalDateTime modDate;
   private int viewCount;
   private int likeCount;
   private short reportCount;
