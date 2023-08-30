@@ -59,7 +59,7 @@ public class ScriptsBoardControllerImpl implements
 
   @Override
   @HeaderAuthCheck
-  @PostMapping("/")
+  @PostMapping("")
   public ResponseEntity<Void> postBoards(HttpServletRequest request,
       @RequestParam(value = "script-file") MultipartFile scriptFile,
       @RequestParam(value = "body") String body) {
@@ -110,7 +110,7 @@ public class ScriptsBoardControllerImpl implements
   }
 
   @Override
-  @GetMapping("/")
+  @GetMapping("")
   public ResponseEntity<Page<ScriptBoardsPageResultDto>> getBoards(
       @PageableDefault(size = 15, sort = "regDate", direction = Direction.DESC) Pageable pageable,
       @RequestParam(required = false, defaultValue = "0") Long mainCursor,
