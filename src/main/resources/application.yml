@@ -2,7 +2,7 @@ server:
   port: 8091
 spring:
   application:
-    name: user-service
+    name: board-service
   profiles:
     include: env
   jpa:
