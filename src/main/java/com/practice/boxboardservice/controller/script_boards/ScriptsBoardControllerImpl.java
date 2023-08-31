@@ -114,9 +114,11 @@ public class ScriptsBoardControllerImpl implements
   public ResponseEntity<Page<ScriptBoardsPageResultDto>> getBoards(
       @PageableDefault(page = 0, size = 5, sort = "regDate", direction = Direction.DESC) Pageable pageable,
       @RequestParam(required = false, defaultValue = "") String search,
+      @RequestParam(required = false, defaultValue = "") String writerUuid,
       @RequestParam(required = false, defaultValue = "NONE") ScriptSearchCondition searchCondition) {
     ScriptBoardsPageConditionDto conditionDto = ScriptBoardsPageConditionDto.builder()
         .search(search.trim())
+        .writerUuid(writerUuid)
         .searchCondition(searchCondition)
         .build();
     Page<ScriptBoardsPageResultDto> page = scriptBoardsService.findBoards(pageable, conditionDto);
