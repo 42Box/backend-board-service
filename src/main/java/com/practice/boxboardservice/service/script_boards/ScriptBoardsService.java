@@ -1,8 +1,13 @@
 package com.practice.boxboardservice.service.script_boards;
 
+import com.practice.boxboardservice.client.UserClient.UsersClient;
+import com.practice.boxboardservice.client.UserClient.dto.RequestIsMyScriptDto;
+import com.practice.boxboardservice.client.UserClient.dto.ResponseIsMyScriptDto;
 import com.practice.boxboardservice.entity.script_boards.ScriptBoardsEntity;
+import com.practice.boxboardservice.entity.script_boards.ScriptBoardsLikesEntity;
 import com.practice.boxboardservice.global.env.EnvUtil;
 import com.practice.boxboardservice.global.exception.DefaultServiceException;
+import com.practice.boxboardservice.repository.likes.script_boards_likes.ScriptBoardsLikesRepository;
 import com.practice.boxboardservice.repository.script_boards.ScriptBoardsRepository;
 import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageConditionDto;
 import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageResultDto;
@@ -14,7 +19,7 @@ import com.practice.boxboardservice.service.dto.DeleteBoardsDto;
 import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
 import com.practice.boxboardservice.service.script_boards.dto.GetScriptBoardsDto;
 import com.practice.boxboardservice.service.script_boards.dto.PostScriptBoardsDto;
-import lombok.AllArgsConstructor;
+import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,13 +32,25 @@ import org.springframework.stereotype.Service;
  * @since : 2023/08/27
  */
 @Service
-@AllArgsConstructor
 public class ScriptBoardsService {
 
   private final ScriptBoardsRepository scriptBoardsRepository;
+  private final ScriptBoardsLikesRepository scriptBoardsLikesRepository;
   private final S3Service s3Service;
   private final ModelMapper modelMapper;
   private final EnvUtil envUtil;
+  private final UsersClient usersClient;
+
+  public ScriptBoardsService(ScriptBoardsRepository scriptBoardsRepository,
+      ScriptBoardsLikesRepository scriptBoardsLikesRepository, S3Service s3Service,
+      ModelMapper modelMapper, EnvUtil envUtil, UsersClient usersClient) {
+    this.scriptBoardsRepository = scriptBoardsRepository;
+    this.scriptBoardsLikesRepository = scriptBoardsLikesRepository;
+    this.s3Service = s3Service;
+    this.modelMapper = modelMapper;
+    this.envUtil = envUtil;
+    this.usersClient = usersClient;
+  }
 
 
   public void postBoards(PostScriptBoardsDto dto) {
@@ -64,13 +81,36 @@ public class ScriptBoardsService {
         .build();
   }
 
-  public GetScriptBoardsDto findBoardsByBoardId(Long boardId) {
+  public GetScriptBoardsDto findBoardsByBoardId(Long boardId, Optional<String> userUuid) {
     ScriptBoardsEntity scriptBoardsEntity = scriptBoardsRepository.findByIdAndDeleted(boardId,
             false)
         .orElseThrow(() -> new DefaultServiceException("boards.error.not-found", envUtil));
     GetScriptBoardsDto resultDto = modelMapper.map(scriptBoardsEntity, GetScriptBoardsDto.class);
     resultDto.setBoardId(scriptBoardsEntity.getId());
+    setBoardLiked(resultDto, userUuid);
+    setScriptSaved(resultDto, userUuid);
     return resultDto;
+  }
+
+  private void setScriptSaved(GetScriptBoardsDto resultDto, Optional<String> userUuid) {
+    RequestIsMyScriptDto requestIsMyScriptDto = new RequestIsMyScriptDto();
+    requestIsMyScriptDto.setScriptPath(resultDto.getScriptPath());
+    requestIsMyScriptDto.setUserUuid(userUuid);
+    ResponseIsMyScriptDto dto = usersClient.isMyScript(requestIsMyScriptDto);
+    resultDto.setScriptSaved(dto.isScriptSaved());
+    resultDto.setSavedId(dto.getSavedId());
+  }
+
+  private void setBoardLiked(GetScriptBoardsDto resultDto, Optional<String> userUuid) {
+    if (userUuid.isPresent()) {
+      Optional<ScriptBoardsLikesEntity> entity = scriptBoardsLikesRepository
+          .getByBoardIdAndUserUuid(resultDto.getBoardId(), userUuid.get());
+      if (entity.isPresent()) {
+        resultDto.setBoardLiked(true);
+      }
+      return;
+    }
+    resultDto.setBoardLiked(false);
   }
 
   public void updateBoards(UpdateBoardsDto dto) {

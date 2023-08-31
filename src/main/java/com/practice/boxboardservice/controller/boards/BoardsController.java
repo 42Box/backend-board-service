@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.controller;
+package com.practice.boxboardservice.controller.boards;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +15,7 @@ public interface BoardsController<RES_GET, RES_PUT, RES_GET_PAGE, SEARCH_CONDITI
 
   ResponseEntity<Void> postBoards(HttpServletRequest request, MultipartFile file, String bodyJson);
 
-  ResponseEntity<RES_GET> getBoards(Long boardId);
+  ResponseEntity<RES_GET> getBoards(HttpServletRequest request, Long boardId);
 
   ResponseEntity<Void> updateBoards(HttpServletRequest request, Long boardId, RES_PUT body);
 

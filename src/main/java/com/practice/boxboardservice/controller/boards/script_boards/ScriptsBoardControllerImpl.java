@@ -1,9 +1,9 @@
-package com.practice.boxboardservice.controller.script_boards;
+package com.practice.boxboardservice.controller.boards.script_boards;
 
-import com.practice.boxboardservice.controller.BoardsController;
-import com.practice.boxboardservice.controller.dto.RequestPostBoardsDto;
-import com.practice.boxboardservice.controller.script_boards.dto.RequestPostScriptBoardsDto;
-import com.practice.boxboardservice.controller.script_boards.dto.ResponseGetScriptBoardsDto;
+import com.practice.boxboardservice.controller.boards.BoardsController;
+import com.practice.boxboardservice.controller.boards.dto.RequestPostBoardsDto.RequestPostBoardsDto;
+import com.practice.boxboardservice.controller.boards.script_boards.dto.RequestPostScriptBoardsDto;
+import com.practice.boxboardservice.controller.boards.script_boards.dto.ResponseGetScriptBoardsDto;
 import com.practice.boxboardservice.global.aop.validate_nickname_header.HeaderAuthCheck;
 import com.practice.boxboardservice.global.env.EnvUtil;
 import com.practice.boxboardservice.global.exception.DefaultServiceException;
@@ -18,6 +18,7 @@ import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
 import com.practice.boxboardservice.service.script_boards.ScriptBoardsService;
 import com.practice.boxboardservice.service.script_boards.dto.GetScriptBoardsDto;
 import com.practice.boxboardservice.service.script_boards.dto.PostScriptBoardsDto;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -81,8 +82,10 @@ public class ScriptsBoardControllerImpl implements
 
   @Override
   @GetMapping("/{boardId}")
-  public ResponseEntity<ResponseGetScriptBoardsDto> getBoards(@PathVariable Long boardId) {
-    GetScriptBoardsDto dto = scriptBoardsService.findBoardsByBoardId(boardId);
+  public ResponseEntity<ResponseGetScriptBoardsDto> getBoards(HttpServletRequest request,
+      @PathVariable Long boardId) {
+    Optional<String> userUuid = Optional.ofNullable(request.getHeader("uuid"));
+    GetScriptBoardsDto dto = scriptBoardsService.findBoardsByBoardId(boardId, userUuid);
     ResponseGetScriptBoardsDto responseGetScriptBoardsDto = modelMapper.map(dto,
         ResponseGetScriptBoardsDto.class);
     return ResponseEntity.status(HttpStatus.OK).body(responseGetScriptBoardsDto);
