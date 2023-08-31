@@ -32,4 +32,7 @@ public class GetScriptBoardsDto {
   private int likeCount;
   private short reportCount;
   private int commentCount;
+  private boolean boardLiked;
+  private boolean scriptSaved;
+  private long savedId;
 }

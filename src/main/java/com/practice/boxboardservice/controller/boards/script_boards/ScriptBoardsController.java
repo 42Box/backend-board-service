@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.controller.script_boards;
+package com.practice.boxboardservice.controller.boards.script_boards;
 
 /**
  * ScriptBoardsController.

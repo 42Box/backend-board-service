@@ -1,10 +1,9 @@
-package com.practice.boxboardservice.controller.script_boards.dto;
+package com.practice.boxboardservice.controller.boards.script_boards.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.joda.time.DateTime;
 
 /**
  * ResponseGetBoards.
@@ -33,4 +32,7 @@ public class ResponseGetScriptBoardsDto {
   private int likeCount;
   private short reportCount;
   private int commentCount;
+  private boolean boardLiked;
+  private boolean scriptSaved;
+  private long savedId;
 }

@@ -1,8 +1,7 @@
-package com.practice.boxboardservice.controller.script_boards.dto;
+package com.practice.boxboardservice.controller.boards.script_boards.dto;
 
-import com.practice.boxboardservice.controller.dto.RequestPostBoardsDto;
+import com.practice.boxboardservice.controller.boards.dto.RequestPostBoardsDto.RequestPostBoardsDto;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -16,4 +16,5 @@ public interface ScriptBoardsRepository extends JpaRepository<ScriptBoardsEntity
     QuerydslPredicateExecutor<ScriptBoardsEntity> {
 
   Optional<ScriptBoardsEntity> findByIdAndDeleted(Long boardId, boolean deleted);
+
 }

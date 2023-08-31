@@ -105,4 +105,12 @@ public class ScriptBoardsEntity extends BaseEntity {
   public void delete() {
     this.deleted = true;
   }
+
+  public void decreaseLikes() {
+    this.likeCount--;
+  }
+
+  public void increaseLikes() {
+    this.likeCount++;
+  }
 }
