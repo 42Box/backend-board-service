@@ -75,6 +75,7 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
             )
         ).from(scriptBoardsEntity)
         .where(
+            writerUuidCondition(condition),
             titleSearch(condition),
             contentSearch(condition),
             nicknameSearch(condition),
@@ -90,6 +91,7 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
     JPAQuery<ScriptBoardsEntity> countQuery = queryFactory
         .selectFrom(scriptBoardsEntity)
         .where(
+            writerUuidCondition(condition),
             titleSearch(condition),
             contentSearch(condition),
             nicknameSearch(condition),
@@ -97,6 +99,11 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
         );
     return PageableExecutionUtils.getPage(content, pageable,
         countQuery.fetch()::size);
+  }
+
+  private BooleanExpression writerUuidCondition(ScriptBoardsPageConditionDto condition) {
+    return condition.getWriterUuid().isEmpty() ? null
+        : scriptBoardsEntity.writerUuid.eq(condition.getWriterUuid());
   }
 
   private BooleanExpression titleSearch(ScriptBoardsPageConditionDto condition) {

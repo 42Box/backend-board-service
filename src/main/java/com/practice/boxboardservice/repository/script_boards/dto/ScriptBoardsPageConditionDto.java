@@ -16,5 +16,6 @@ import lombok.Data;
 @Builder
 public class ScriptBoardsPageConditionDto {
   private String search;
+  private String writerUuid;
   private ScriptSearchCondition searchCondition;
 }
