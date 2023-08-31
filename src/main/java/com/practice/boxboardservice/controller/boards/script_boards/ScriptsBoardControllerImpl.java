@@ -18,6 +18,7 @@ import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
 import com.practice.boxboardservice.service.script_boards.ScriptBoardsService;
 import com.practice.boxboardservice.service.script_boards.dto.GetScriptBoardsDto;
 import com.practice.boxboardservice.service.script_boards.dto.PostScriptBoardsDto;
+import java.io.IOException;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -130,8 +131,15 @@ public class ScriptsBoardControllerImpl implements
   }
 
   private void scriptTypeCheck(MultipartFile scriptFile) {
-    if (S3File.SCRIPT.getContentType().equals(scriptFile.getContentType())) {
+    if (!S3File.SCRIPT.getContentType().equals(scriptFile.getContentType())) {
       throw new DefaultServiceException("boards.error.invalid-script-format", envUtil);
+    }
+    try {
+      if (scriptFile.getBytes().length > 1000000) {
+        throw new DefaultServiceException("boards.error.invalid-script-size", envUtil);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException();
     }
   }
 }
