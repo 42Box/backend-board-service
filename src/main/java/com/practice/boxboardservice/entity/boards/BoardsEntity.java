@@ -1,5 +1,7 @@
 package com.practice.boxboardservice.entity.boards;
 
+import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
+
 /**
  * BoardsEntity.
  *
@@ -7,6 +9,10 @@ package com.practice.boxboardservice.entity.boards;
  * @since : 2023/09/01
  */
 public interface BoardsEntity {
+
+  void update(UpdateBoardsDto dto);
+
+  void delete();
 
   void decreaseLikes();
 
