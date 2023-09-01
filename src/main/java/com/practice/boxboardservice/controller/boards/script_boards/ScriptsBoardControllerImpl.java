@@ -1,7 +1,7 @@
 package com.practice.boxboardservice.controller.boards.script_boards;
 
 import com.practice.boxboardservice.controller.boards.BoardsController;
-import com.practice.boxboardservice.controller.boards.dto.RequestPostBoardsDto.RequestPostBoardsDto;
+import com.practice.boxboardservice.controller.boards.dto.RequestPostBoardsDto;
 import com.practice.boxboardservice.controller.boards.script_boards.dto.RequestPostScriptBoardsDto;
 import com.practice.boxboardservice.controller.boards.script_boards.dto.ResponseGetScriptBoardsDto;
 import com.practice.boxboardservice.global.aop.validate_nickname_header.HeaderAuthCheck;
@@ -9,10 +9,9 @@ import com.practice.boxboardservice.global.env.EnvUtil;
 import com.practice.boxboardservice.global.exception.DefaultServiceException;
 import com.practice.boxboardservice.global.utils.JsonObjectConverter;
 import com.practice.boxboardservice.global.utils.ObjectValidator;
-import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageConditionDto;
-import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageResultDto;
-import com.practice.boxboardservice.repository.script_boards.type.ScriptSearchCondition;
-import com.practice.boxboardservice.service.aws.s3.type.S3File;
+import com.practice.boxboardservice.repository.boards.script_boards.dto.ScriptBoardsPageConditionDto;
+import com.practice.boxboardservice.repository.boards.script_boards.dto.ScriptBoardsPageResultDto;
+import com.practice.boxboardservice.repository.boards.script_boards.type.ScriptSearchCondition;
 import com.practice.boxboardservice.service.dto.DeleteBoardsDto;
 import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
 import com.practice.boxboardservice.service.script_boards.ScriptBoardsService;
@@ -69,6 +68,7 @@ public class ScriptsBoardControllerImpl implements
     RequestPostScriptBoardsDto requestPostBoardsDto = jsonObjectConverter.convertToObject(body,
         RequestPostScriptBoardsDto.class, "global.error.invalid-argument-request");
     objectValidator.validateBodyObject(requestPostBoardsDto);
+    //추상화
     scriptTypeCheck(scriptFile);
     PostScriptBoardsDto dto = modelMapper.map(requestPostBoardsDto, PostScriptBoardsDto.class);
     dto.setWriterUuid(request.getHeader("uuid"));

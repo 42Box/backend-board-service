@@ -115,10 +115,10 @@ public class ScriptBoardsEntity extends BaseEntity implements BoardsEntity {
   }
 
   public void decreaseDislikes() {
-    this.likeCount--;
+    this.dislikeCount--;
   }
 
   public void increaseDislikes() {
-    this.likeCount++;
+    this.dislikeCount++;
   }
 }

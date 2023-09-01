@@ -1,13 +1,13 @@
-package com.practice.boxboardservice.repository.script_boards;
+package com.practice.boxboardservice.repository.boards.script_boards;
 
 
 import static com.practice.boxboardservice.entity.boards.QScriptBoardsEntity.scriptBoardsEntity;
 
 import com.practice.boxboardservice.entity.boards.ScriptBoardsEntity;
-import com.practice.boxboardservice.repository.script_boards.dto.QScriptBoardsPageResultDto;
-import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageConditionDto;
-import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageResultDto;
-import com.practice.boxboardservice.repository.script_boards.type.ScriptSearchCondition;
+import com.practice.boxboardservice.repository.boards.script_boards.dto.QScriptBoardsPageResultDto;
+import com.practice.boxboardservice.repository.boards.script_boards.dto.ScriptBoardsPageConditionDto;
+import com.practice.boxboardservice.repository.boards.script_boards.dto.ScriptBoardsPageResultDto;
+import com.practice.boxboardservice.repository.boards.script_boards.type.ScriptSearchCondition;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -69,6 +69,7 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
                 scriptBoardsEntity.writerProfileImagePath,
                 scriptBoardsEntity.viewCount,
                 scriptBoardsEntity.likeCount,
+                scriptBoardsEntity.dislikeCount,
                 scriptBoardsEntity.commentCount,
                 scriptBoardsEntity.regDate,
                 scriptBoardsEntity.modDate

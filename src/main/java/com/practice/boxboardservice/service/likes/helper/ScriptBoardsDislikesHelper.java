@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @since : 2023/09/01
  */
 @Component
-public class ScriptsBoardsDislikesHelper implements
+public class ScriptBoardsDislikesHelper implements
     LikesHelper<ScriptBoardsDislikesEntity, ScriptBoardsEntity> {
 
   @Override

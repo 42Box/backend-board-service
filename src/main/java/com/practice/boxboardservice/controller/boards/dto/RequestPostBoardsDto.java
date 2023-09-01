@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.controller.boards.dto.RequestPostBoardsDto;
+package com.practice.boxboardservice.controller.boards.dto;
 
 import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
  * RequestPostBoardsDto.
  *
  * @author : middlefitting
- * @since : 2023/08/31
+ * @since : 2023/09/01
  */
 @Data
 @AllArgsConstructor
@@ -24,4 +24,5 @@ public class RequestPostBoardsDto {
   @Length(min = 10, max = 2000)
   protected String content;
 }
+
 

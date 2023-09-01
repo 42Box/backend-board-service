@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.repository.script_boards.type;
+package com.practice.boxboardservice.repository.boards.script_boards.type;
 
 /**
  * ScriptSearchCondition.

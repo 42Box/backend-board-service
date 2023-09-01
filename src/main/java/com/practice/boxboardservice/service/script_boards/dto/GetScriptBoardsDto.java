@@ -30,7 +30,7 @@ public class GetScriptBoardsDto {
   private LocalDateTime modDate;
   private int viewCount;
   private int likeCount;
-  private int reportCount;
+  private int dislikeCount;
   private int commentCount;
   private boolean boardLiked;
   private boolean boardDisliked;

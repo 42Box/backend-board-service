@@ -1,7 +1,7 @@
-package com.practice.boxboardservice.repository.script_boards;
+package com.practice.boxboardservice.repository.boards.script_boards;
 
-import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageConditionDto;
-import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageResultDto;
+import com.practice.boxboardservice.repository.boards.script_boards.dto.ScriptBoardsPageConditionDto;
+import com.practice.boxboardservice.repository.boards.script_boards.dto.ScriptBoardsPageResultDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

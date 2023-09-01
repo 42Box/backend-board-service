@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.repository.likes.script_boards_likes;
+package com.practice.boxboardservice.repository.likes;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +12,5 @@ import org.springframework.data.repository.NoRepositoryBean;
  */
 @NoRepositoryBean
 public interface LikesRepository<T> extends JpaRepository<T, Long> {
-
   Optional<T> getByBoardIdAndUserUuid(Long boardId, String userUuid);
 }

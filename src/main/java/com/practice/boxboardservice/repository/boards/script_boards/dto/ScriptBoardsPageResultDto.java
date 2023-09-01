@@ -1,8 +1,7 @@
-package com.practice.boxboardservice.repository.script_boards.dto;
+package com.practice.boxboardservice.repository.boards.script_boards.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import java.time.LocalDateTime;
-import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -23,6 +22,7 @@ public class ScriptBoardsPageResultDto {
   private final String writerProfileImagePath;
   private final int viewCount;
   private final int likeCount;
+  private final int dislikeCount;
   private final int commentCount;
 
   private final LocalDateTime regDate;
@@ -32,7 +32,7 @@ public class ScriptBoardsPageResultDto {
   @QueryProjection
   public ScriptBoardsPageResultDto(Long boardId, String title, String content, String writerUuid,
       String writerName, String writerProfileImageUrl, String writerProfileImagePath,
-      int viewCount, int likeCount, int commentCount, LocalDateTime regDate,
+      int viewCount, int likeCount, int dislikeCount, int commentCount, LocalDateTime regDate,
       LocalDateTime modDate) {
     this.boardId = boardId;
     this.title = title;
@@ -43,6 +43,7 @@ public class ScriptBoardsPageResultDto {
     this.writerProfileImagePath = writerProfileImagePath;
     this.viewCount = viewCount;
     this.likeCount = likeCount;
+    this.dislikeCount = dislikeCount;
     this.commentCount = commentCount;
     this.regDate = regDate;
     this.modDate = modDate;
