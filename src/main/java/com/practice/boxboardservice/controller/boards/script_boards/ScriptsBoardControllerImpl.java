@@ -131,9 +131,9 @@ public class ScriptsBoardControllerImpl implements
   }
 
   private void scriptTypeCheck(MultipartFile scriptFile) {
-    if (!S3File.SCRIPT.getContentType().equals(scriptFile.getContentType())) {
-      throw new DefaultServiceException("boards.error.invalid-script-format", envUtil);
-    }
+//    if (!S3File.SCRIPT.getContentType().equals(scriptFile.getContentType())) {
+//      throw new DefaultServiceException("boards.error.invalid-script-format", envUtil);
+//    }
     try {
       if (scriptFile.getBytes().length > 1000000) {
         throw new DefaultServiceException("boards.error.invalid-script-size", envUtil);
