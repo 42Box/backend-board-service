@@ -8,7 +8,7 @@ package com.practice.boxboardservice.service.aws.s3.type;
  */
 public enum S3File {
   SCRIPT("script_file/", "sh", "application/x-sh", "boards.error.s3-script-upload-fail"),
-  FREE_BOARD_IMAGE("free_board_image/", "png", "image/png",
+  SERVICE_BOARD_IMAGE("service_board_image/", "png", "image/png",
       "boards.error.s3-free-board-image-upload-fail");
 
   private final String folder;

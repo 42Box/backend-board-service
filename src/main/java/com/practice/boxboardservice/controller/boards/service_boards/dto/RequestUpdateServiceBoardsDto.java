@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.controller.boards.script_boards.dto;
+package com.practice.boxboardservice.controller.boards.service_boards.dto;
 
 import com.practice.boxboardservice.controller.boards.dto.RequestPostBoardsDto;
 import javax.validation.constraints.NotEmpty;
@@ -16,14 +16,15 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RequestPostScriptBoardsDto extends RequestPostBoardsDto {
+public class RequestUpdateServiceBoardsDto extends RequestPostBoardsDto {
 
   @NotEmpty
-  @Length(min = 1, max = 50)
-  private String scriptName;
+  @Length(min = 1, max = 255)
+  private String serviceUrl;
 
-  public RequestPostScriptBoardsDto(String title, String content, String scriptName) {
+  public RequestUpdateServiceBoardsDto(String title, String content, String serviceUrl) {
     super(title, content);
-    this.scriptName = scriptName;
+    this.serviceUrl = serviceUrl;
+
   }
 }

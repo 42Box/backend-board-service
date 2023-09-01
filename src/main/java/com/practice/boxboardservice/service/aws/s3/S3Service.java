@@ -8,8 +8,12 @@ import com.practice.boxboardservice.global.env.EnvUtil;
 import com.practice.boxboardservice.global.exception.DefaultServiceException;
 import com.practice.boxboardservice.service.aws.s3.dto.S3UploadDto;
 import com.practice.boxboardservice.service.aws.s3.dto.S3UploadResultDto;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.UUID;
+import javax.imageio.ImageIO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +44,19 @@ public class S3Service {
       throw new DefaultServiceException(dto.getS3File().getErrMsg(), envUtil);
     }
   }
+
+  public void updateFile(S3UploadDto dto, String s3FilePath) {
+    try {
+      String bucketName = envUtil.getStringEnv("bucket.name");
+      InputStream is = dto.getFile().getInputStream();
+      ObjectMetadata metadata = getMetadata(dto);
+      s3client.putObject(
+          new PutObjectRequest(bucketName, s3FilePath, is, metadata));
+    } catch (Exception e) {
+      throw new DefaultServiceException(dto.getS3File().getErrMsg(), envUtil);
+    }
+  }
+
 
   public void deleteFile(String filePath) {
     try {
