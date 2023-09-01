@@ -10,8 +10,6 @@ import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
  */
 public interface BoardsEntity {
 
-  void update(UpdateBoardsDto dto);
-
   void delete();
 
   void decreaseLikes();

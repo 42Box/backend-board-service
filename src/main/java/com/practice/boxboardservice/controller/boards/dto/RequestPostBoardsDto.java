@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.Length;
 public class RequestPostBoardsDto {
 
   @NotEmpty
-  @Length(min = 10, max = 50)
+  @Length(min = 10, max = 40)
   protected String title;
   @NotEmpty
   @Length(min = 10, max = 2000)

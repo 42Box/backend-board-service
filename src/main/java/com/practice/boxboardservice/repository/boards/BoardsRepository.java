@@ -14,5 +14,5 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface BoardsRepository<T> extends JpaRepository<T, Long> {
 
-  Optional<ScriptBoardsEntity> findByIdAndDeleted(Long boardId, boolean deleted);
+  Optional<T> findByIdAndDeleted(Long boardId, boolean deleted);
 }

@@ -1,6 +1,7 @@
 package com.practice.boxboardservice.entity.boards;
 
 import com.practice.boxboardservice.entity.BaseEntity;
+import com.practice.boxboardservice.service.boards.script_boards.dto.UpdateScriptBoardsDto;
 import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +36,7 @@ public class ScriptBoardsEntity extends BaseEntity implements BoardsEntity {
   @Column(name = "script_board_id", updatable = false, unique = true)
   private Long id;
 
-  @Column(name = "script_board_title", nullable = false, columnDefinition = "VARCHAR(50)")
+  @Column(name = "script_board_title", nullable = false, columnDefinition = "VARCHAR(40)")
   private String title;
 
   @Column(name = "script_board_content", nullable = false, columnDefinition = "VARCHAR(2000)")
@@ -97,9 +98,10 @@ public class ScriptBoardsEntity extends BaseEntity implements BoardsEntity {
     this.deleted = false;
   }
 
-  public void update(UpdateBoardsDto dto) {
+  public void update(UpdateScriptBoardsDto dto) {
     this.title = dto.getTitle();
     this.content = dto.getContent();
+    this.scriptName = dto.getScriptName();
   }
 
   public void delete() {

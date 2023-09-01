@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.service.script_boards.dto;
+package com.practice.boxboardservice.service.boards.script_boards.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

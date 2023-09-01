@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.service.script_boards.dto;
+package com.practice.boxboardservice.service.boards.service_boards.dto;
 
 import com.practice.boxboardservice.service.dto.PostBoardsDto;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * PostScriptBoardsDto.
+ * PostImageBoardsDto.
  *
  * @author : middlefitting
  * @since : 2023/08/27
@@ -15,19 +15,17 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostScriptBoardsDto extends PostBoardsDto {
+public class PostServiceBoardsDto extends PostBoardsDto {
 
-  private String scriptName;
-  private String scriptPath;
-  private String scriptUrl;
+  private String serviceUrl;
+  private String imagePath;
   private String writerUuid;
   private String writerNickname;
-  private String writerProfileImageUrl;
   private String writerProfileImagePath;
-  private MultipartFile scriptFile;
+  private MultipartFile ImageFile;
 
-  public PostScriptBoardsDto(String title, String content, String scriptName) {
+  public PostServiceBoardsDto(String title, String content, String serviceUrl) {
     super(title, content);
-    this.scriptName = scriptName;
+    this.serviceUrl = serviceUrl;
   }
 }

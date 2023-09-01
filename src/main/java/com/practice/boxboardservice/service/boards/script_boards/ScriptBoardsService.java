@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.service.script_boards;
+package com.practice.boxboardservice.service.boards.script_boards;
 
 import com.practice.boxboardservice.client.UserClient.UsersClient;
 import com.practice.boxboardservice.client.UserClient.dto.RequestIsMyScriptDto;
@@ -17,10 +17,11 @@ import com.practice.boxboardservice.service.aws.s3.S3Service;
 import com.practice.boxboardservice.service.aws.s3.dto.S3UploadDto;
 import com.practice.boxboardservice.service.aws.s3.dto.S3UploadResultDto;
 import com.practice.boxboardservice.service.aws.s3.type.S3File;
+import com.practice.boxboardservice.service.boards.script_boards.dto.PostScriptBoardsDto;
+import com.practice.boxboardservice.service.boards.script_boards.dto.UpdateScriptBoardsDto;
 import com.practice.boxboardservice.service.dto.DeleteBoardsDto;
 import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
-import com.practice.boxboardservice.service.script_boards.dto.GetScriptBoardsDto;
-import com.practice.boxboardservice.service.script_boards.dto.PostScriptBoardsDto;
+import com.practice.boxboardservice.service.boards.script_boards.dto.GetScriptBoardsDto;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -132,7 +133,7 @@ public class ScriptBoardsService {
     resultDto.setBoardDisliked(false);
   }
 
-  public void updateBoards(UpdateBoardsDto dto) {
+  public void updateBoards(UpdateScriptBoardsDto dto) {
     ScriptBoardsEntity scriptBoardsEntity = scriptBoardsRepository.findByIdAndDeleted(
             dto.getBoardId(), false)
         .orElseThrow(() -> new DefaultServiceException("boards.error.not-found", envUtil));

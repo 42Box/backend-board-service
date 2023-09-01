@@ -1,6 +1,7 @@
 package com.practice.boxboardservice.entity.boards;
 
 import com.practice.boxboardservice.entity.BaseEntity;
+import com.practice.boxboardservice.service.boards.service_boards.dto.UpdateServiceBoardsDto;
 import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * ServiceBoards.
+ * imageBoards.
  *
  * @author : middlefitting
  * @since : 2023/08/27
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "service_boards", indexes = {
     @Index(name = "idx_service_boards_writer_uuid", columnList = "service_board_writer_uuid", unique = false),
-    @Index(name = "idx_service_boards_image_path", columnList = "service_board_image_path", unique = true),
+    @Index(name = "idx_service_boards_image_path", columnList = "service_board_image_path", unique = false),
     @Index(name = "idx_service_boards_deleted", columnList = "service_board_deleted", unique = false),
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,13 +36,16 @@ public class ServiceBoardsEntity extends BaseEntity implements BoardsEntity {
   @Column(name = "service_board_id", updatable = false, unique = true)
   private Long id;
 
-  @Column(name = "service_board_title", nullable = false, columnDefinition = "VARCHAR(50)")
+  @Column(name = "service_board_title", nullable = false, columnDefinition = "VARCHAR(40)")
   private String title;
 
   @Column(name = "service_board_content", nullable = false, columnDefinition = "VARCHAR(2000)")
   private String content;
 
-  @Column(name = "service_board_image_path", nullable = false, unique = true, updatable = false, columnDefinition = "VARCHAR(255)")
+  @Column(name = "service_board_service_url", nullable = false, columnDefinition = "VARCHAR(255)")
+  private String serviceUrl;
+
+  @Column(name = "service_board_image_path", nullable = false, columnDefinition = "VARCHAR(255)")
   private String imagePath;
 
   @Column(name = "service_board_writer_uuid", nullable = false, columnDefinition = "VARCHAR(255)")
@@ -49,9 +53,6 @@ public class ServiceBoardsEntity extends BaseEntity implements BoardsEntity {
 
   @Column(name = "service_board_writer_nickname", nullable = false, columnDefinition = "VARCHAR(50)")
   private String writerNickname;
-
-  @Column(name = "service_board_writer_profile_image_url", nullable = false, columnDefinition = "VARCHAR(255)")
-  private String writerProfileImageUrl;
 
   @Column(name = "service_board_writer_profile_image_path", nullable = false, columnDefinition = "VARCHAR(255)")
   private String writerProfileImagePath;
@@ -72,14 +73,14 @@ public class ServiceBoardsEntity extends BaseEntity implements BoardsEntity {
   private boolean deleted;
 
   @Builder
-  public ServiceBoardsEntity(String title, String content, String imagePath, String writerUuid,
-      String writerNickname, String writerProfileImageUrl, String writerProfileImagePath) {
+  public ServiceBoardsEntity(String title, String content, String serviceUrl, String imagePath,
+      String writerUuid, String writerNickname, String writerProfileImagePath) {
     this.title = title;
     this.content = content;
+    this.serviceUrl = serviceUrl;
     this.imagePath = imagePath;
     this.writerUuid = writerUuid;
     this.writerNickname = writerNickname;
-    this.writerProfileImageUrl = writerProfileImageUrl;
     this.writerProfileImagePath = writerProfileImagePath;
     this.viewCount = 0;
     this.likeCount = 0;
@@ -88,9 +89,11 @@ public class ServiceBoardsEntity extends BaseEntity implements BoardsEntity {
     this.deleted = false;
   }
 
-  public void update(UpdateBoardsDto dto) {
+  public void update(UpdateServiceBoardsDto dto, String imagePath) {
     this.title = dto.getTitle();
     this.content = dto.getContent();
+    this.serviceUrl = dto.getServiceUrl();
+    this.imagePath = imagePath;
   }
 
   public void delete() {
@@ -111,5 +114,9 @@ public class ServiceBoardsEntity extends BaseEntity implements BoardsEntity {
 
   public void increaseDislikes() {
     this.dislikeCount++;
+  }
+
+  public void deletePath() {
+    this.imagePath = "";
   }
 }

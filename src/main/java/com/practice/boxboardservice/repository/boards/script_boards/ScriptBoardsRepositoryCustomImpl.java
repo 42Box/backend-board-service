@@ -80,7 +80,8 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
             titleSearch(condition),
             contentSearch(condition),
             nicknameSearch(condition),
-            scriptSearch(condition)
+            scriptSearch(condition),
+            scriptBoardsEntity.deleted.eq(false)
         )
         .orderBy(
             mainSort(pageable)
@@ -96,7 +97,8 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
             titleSearch(condition),
             contentSearch(condition),
             nicknameSearch(condition),
-            scriptSearch(condition)
+            scriptSearch(condition),
+            scriptBoardsEntity.deleted.eq(false)
         );
     return PageableExecutionUtils.getPage(content, pageable,
         countQuery.fetch()::size);
