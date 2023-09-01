@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.entity.script_boards;
+package com.practice.boxboardservice.entity.boards;
 
 import com.practice.boxboardservice.entity.BaseEntity;
 import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ScriptBoardsEntity extends BaseEntity {
+public class ScriptBoardsEntity extends BaseEntity implements BoardsEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,8 +68,8 @@ public class ScriptBoardsEntity extends BaseEntity {
   @Column(name = "script_board_like_count")
   private int likeCount;
 
-  @Column(name = "script_board_report_count")
-  private short reportCount;
+  @Column(name = "script_board_dislike_count")
+  private int dislikeCount;
 
   @Column(name = "script_board_comment_count")
   private int commentCount;
@@ -92,7 +92,7 @@ public class ScriptBoardsEntity extends BaseEntity {
     this.writerProfileImagePath = writerProfileImagePath;
     this.viewCount = 0;
     this.likeCount = 0;
-    this.reportCount = 0;
+    this.dislikeCount = 0;
     this.commentCount = 0;
     this.deleted = false;
   }
@@ -111,6 +111,14 @@ public class ScriptBoardsEntity extends BaseEntity {
   }
 
   public void increaseLikes() {
+    this.likeCount++;
+  }
+
+  public void decreaseDislikes() {
+    this.likeCount--;
+  }
+
+  public void increaseDislikes() {
     this.likeCount++;
   }
 }

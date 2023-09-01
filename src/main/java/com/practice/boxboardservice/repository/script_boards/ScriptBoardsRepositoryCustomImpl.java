@@ -1,9 +1,9 @@
 package com.practice.boxboardservice.repository.script_boards;
 
 
-import static com.practice.boxboardservice.entity.script_boards.QScriptBoardsEntity.scriptBoardsEntity;
+import static com.practice.boxboardservice.entity.boards.QScriptBoardsEntity.scriptBoardsEntity;
 
-import com.practice.boxboardservice.entity.script_boards.ScriptBoardsEntity;
+import com.practice.boxboardservice.entity.boards.ScriptBoardsEntity;
 import com.practice.boxboardservice.repository.script_boards.dto.QScriptBoardsPageResultDto;
 import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageConditionDto;
 import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageResultDto;

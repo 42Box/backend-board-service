@@ -19,5 +19,5 @@ public class RequestLikesAndDislikesDto {
   @NotNull
   private Long boardId;
   @NotNull
-  private Boolean boardLiked;
+  private Boolean likeDislikeStatus;
 }

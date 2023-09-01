@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.repository.tyoe;
+package com.practice.boxboardservice.repository.type;
 
 /**
  * BoardSearchCondition.

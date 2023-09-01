@@ -1,4 +1,4 @@
-package com.practice.boxboardservice.entity.script_boards;
+package com.practice.boxboardservice.entity.likes;
 
 import com.practice.boxboardservice.entity.BaseEntity;
 import javax.persistence.Column;
@@ -22,27 +22,27 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(
-    name = "script_boards_likes",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"like_board_id", "like_user_uuid"}),
+    name = "script_boards_dislikes",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"dislike_board_id", "dislike_user_uuid"}),
     indexes = {
-        @Index(name = "idx_like_board_id", columnList = "like_board_id", unique = false),
-        @Index(name = "idx_like_user_uuid", columnList = "like_user_uuid", unique = false)
+        @Index(name = "idx_dislike_board_id", columnList = "dislike_board_id", unique = false),
+        @Index(name = "idx_dislike_user_uuid", columnList = "dislike_user_uuid", unique = false)
     })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ScriptBoardsLikesEntity extends BaseEntity {
+public class ScriptBoardsDislikesEntity extends BaseEntity implements LikesEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "like_id", updatable = false)
+  @Column(name = "dislike_id", updatable = false)
   private long id;
-  @Column(name = "like_board_id", nullable = false, updatable = false, unique = false)
+  @Column(name = "dislike_board_id", nullable = false, updatable = false, unique = false)
   private Long boardId;
-  @Column(name = "like_user_uuid", columnDefinition = "VARCHAR(255)", nullable = false, updatable = false, unique = false)
+  @Column(name = "dislike_user_uuid", columnDefinition = "VARCHAR(255)", nullable = false, updatable = false, unique = false)
   private String userUuid;
 
   @Builder
-  public ScriptBoardsLikesEntity(Long boardId, String userUuid) {
+  public ScriptBoardsDislikesEntity(Long boardId, String userUuid) {
     this.boardId = boardId;
     this.userUuid = userUuid;
   }

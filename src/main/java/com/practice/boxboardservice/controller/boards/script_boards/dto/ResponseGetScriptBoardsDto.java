@@ -30,9 +30,10 @@ public class ResponseGetScriptBoardsDto {
   private LocalDateTime modDate;
   private int viewCount;
   private int likeCount;
-  private short reportCount;
+  private int dislikeCount;
   private int commentCount;
   private boolean boardLiked;
+  private boolean boardDisliked;
   private boolean scriptSaved;
   private long savedId;
 }

@@ -17,5 +17,5 @@ public class LikesAndDislikesDto {
 
   private Long boardId;
   private String userUuid;
-  private Boolean boardLiked;
+  private Boolean likeDislikeStatus;
 }

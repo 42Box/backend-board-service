@@ -1,7 +1,6 @@
 package com.practice.boxboardservice.repository.likes.script_boards_likes;
 
-import com.practice.boxboardservice.entity.likes.ScriptBoardsLikesEntity;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.practice.boxboardservice.entity.likes.ScriptBoardsDislikesEntity;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Repository;
  * @since : 2023/08/31
  */
 @Repository
-public interface ScriptBoardsLikesRepository extends LikesRepository<ScriptBoardsLikesEntity> {
+public interface ScriptBoardsDislikesRepository extends
+    LikesRepository<ScriptBoardsDislikesEntity> {
 
 }
