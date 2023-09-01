@@ -1,11 +1,11 @@
-package com.practice.boxboardservice.controller.likes.script_boards_likes;
+package com.practice.boxboardservice.controller.likes.script_boards_dislikes;
 
 import com.practice.boxboardservice.controller.likes.LikesController;
 import com.practice.boxboardservice.controller.likes.LikesControllerImplTemplate;
 import com.practice.boxboardservice.controller.likes.dto.RequestLikesAndDislikesDto;
 import com.practice.boxboardservice.controller.likes.dto.ResponseLikesAndDislikesDto;
 import com.practice.boxboardservice.global.aop.validate_nickname_header.HeaderAuthCheck;
-import com.practice.boxboardservice.service.likes.script_boards_likes.ScriptBoardsLikesService;
+import com.practice.boxboardservice.service.likes.script_boards_dislike.ScriptBoardsDislikesService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -23,13 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @since : 2023/08/31
  */
 @RestController
-@RequestMapping("/script-boards/likes")
-public class ScriptBoardsLikesControllerImpl implements LikesController {
+@RequestMapping("/script-boards/dislikes")
+public class ScriptBoardsDislikesControllerImpl implements LikesController {
 
   private final LikesControllerImplTemplate template;
 
   @Autowired
-  public ScriptBoardsLikesControllerImpl(ScriptBoardsLikesService likeService,
+  public ScriptBoardsDislikesControllerImpl(ScriptBoardsDislikesService likeService,
       ModelMapper modelMapper) {
     this.template = new LikesControllerImplTemplate(likeService, modelMapper);
   }

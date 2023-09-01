@@ -3,10 +3,12 @@ package com.practice.boxboardservice.service.script_boards;
 import com.practice.boxboardservice.client.UserClient.UsersClient;
 import com.practice.boxboardservice.client.UserClient.dto.RequestIsMyScriptDto;
 import com.practice.boxboardservice.client.UserClient.dto.ResponseIsMyScriptDto;
-import com.practice.boxboardservice.entity.script_boards.ScriptBoardsEntity;
-import com.practice.boxboardservice.entity.script_boards.ScriptBoardsLikesEntity;
+import com.practice.boxboardservice.entity.likes.ScriptBoardsDislikesEntity;
+import com.practice.boxboardservice.entity.boards.ScriptBoardsEntity;
+import com.practice.boxboardservice.entity.likes.ScriptBoardsLikesEntity;
 import com.practice.boxboardservice.global.env.EnvUtil;
 import com.practice.boxboardservice.global.exception.DefaultServiceException;
+import com.practice.boxboardservice.repository.likes.script_boards_likes.ScriptBoardsDislikesRepository;
 import com.practice.boxboardservice.repository.likes.script_boards_likes.ScriptBoardsLikesRepository;
 import com.practice.boxboardservice.repository.script_boards.ScriptBoardsRepository;
 import com.practice.boxboardservice.repository.script_boards.dto.ScriptBoardsPageConditionDto;
@@ -35,17 +37,21 @@ import org.springframework.stereotype.Service;
 public class ScriptBoardsService {
 
   private final ScriptBoardsRepository scriptBoardsRepository;
-  private final ScriptBoardsLikesRepository scriptBoardsLikesRepository;
+  private final ScriptBoardsLikesRepository likesRepository;
+  private final ScriptBoardsDislikesRepository dislikesRepository;
+
   private final S3Service s3Service;
   private final ModelMapper modelMapper;
   private final EnvUtil envUtil;
   private final UsersClient usersClient;
 
   public ScriptBoardsService(ScriptBoardsRepository scriptBoardsRepository,
-      ScriptBoardsLikesRepository scriptBoardsLikesRepository, S3Service s3Service,
+      ScriptBoardsLikesRepository likesRepository,
+      ScriptBoardsDislikesRepository dislikesRepository, S3Service s3Service,
       ModelMapper modelMapper, EnvUtil envUtil, UsersClient usersClient) {
     this.scriptBoardsRepository = scriptBoardsRepository;
-    this.scriptBoardsLikesRepository = scriptBoardsLikesRepository;
+    this.likesRepository = likesRepository;
+    this.dislikesRepository = dislikesRepository;
     this.s3Service = s3Service;
     this.modelMapper = modelMapper;
     this.envUtil = envUtil;
@@ -88,6 +94,7 @@ public class ScriptBoardsService {
     GetScriptBoardsDto resultDto = modelMapper.map(scriptBoardsEntity, GetScriptBoardsDto.class);
     resultDto.setBoardId(scriptBoardsEntity.getId());
     setBoardLiked(resultDto, userUuid);
+    setBoardDisliked(resultDto, userUuid);
     setScriptSaved(resultDto, userUuid);
     return resultDto;
   }
@@ -103,7 +110,7 @@ public class ScriptBoardsService {
 
   private void setBoardLiked(GetScriptBoardsDto resultDto, Optional<String> userUuid) {
     if (userUuid.isPresent()) {
-      Optional<ScriptBoardsLikesEntity> entity = scriptBoardsLikesRepository
+      Optional<ScriptBoardsLikesEntity> entity = likesRepository
           .getByBoardIdAndUserUuid(resultDto.getBoardId(), userUuid.get());
       if (entity.isPresent()) {
         resultDto.setBoardLiked(true);
@@ -111,6 +118,18 @@ public class ScriptBoardsService {
       return;
     }
     resultDto.setBoardLiked(false);
+  }
+
+  private void setBoardDisliked(GetScriptBoardsDto resultDto, Optional<String> userUuid) {
+    if (userUuid.isPresent()) {
+      Optional<ScriptBoardsDislikesEntity> entity = dislikesRepository
+          .getByBoardIdAndUserUuid(resultDto.getBoardId(), userUuid.get());
+      if (entity.isPresent()) {
+        resultDto.setBoardDisliked(true);
+      }
+      return;
+    }
+    resultDto.setBoardDisliked(false);
   }
 
   public void updateBoards(UpdateBoardsDto dto) {

@@ -1,6 +1,6 @@
 package com.practice.boxboardservice.repository.script_boards;
 
-import com.practice.boxboardservice.entity.script_boards.ScriptBoardsEntity;
+import com.practice.boxboardservice.entity.boards.ScriptBoardsEntity;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;

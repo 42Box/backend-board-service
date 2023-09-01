@@ -15,5 +15,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class ResponseLikesAndDislikesDto {
 
-  private boolean boardLiked;
+  private boolean likeDislikeStatus;
 }

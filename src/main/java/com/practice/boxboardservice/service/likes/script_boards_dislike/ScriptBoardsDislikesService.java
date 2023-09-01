@@ -1,9 +1,9 @@
-package com.practice.boxboardservice.service.likes.script_boards_likes;
+package com.practice.boxboardservice.service.likes.script_boards_dislike;
 
 import com.practice.boxboardservice.entity.likes.LikesEntityFactory;
-import com.practice.boxboardservice.entity.likes.ScriptBoardsLikesEntity;
+import com.practice.boxboardservice.entity.likes.ScriptBoardsDislikesEntity;
 import com.practice.boxboardservice.global.env.EnvUtil;
-import com.practice.boxboardservice.repository.likes.script_boards_likes.ScriptBoardsLikesRepository;
+import com.practice.boxboardservice.repository.likes.script_boards_likes.ScriptBoardsDislikesRepository;
 import com.practice.boxboardservice.repository.script_boards.ScriptBoardsRepository;
 import com.practice.boxboardservice.service.likes.LikesService;
 import com.practice.boxboardservice.service.likes.LikesServiceImplTemplate;
@@ -21,15 +21,16 @@ import org.springframework.transaction.annotation.Transactional;
  * @since : 2023/08/31
  */
 @Service
-public class ScriptBoardsLikesService implements LikesService {
+public class ScriptBoardsDislikesService implements LikesService {
 
-  private final LikesServiceImplTemplate<ScriptBoardsLikesEntity> template;
+  private final LikesServiceImplTemplate<ScriptBoardsDislikesEntity> template;
 
   @Autowired
-  public ScriptBoardsLikesService(EnvUtil envUtil, ScriptBoardsLikesRepository likesRepository,
-      LikesEntityFactory<ScriptBoardsLikesEntity> likesEntityFactory,
+  public ScriptBoardsDislikesService(EnvUtil envUtil,
+      ScriptBoardsDislikesRepository likesRepository,
+      LikesEntityFactory<ScriptBoardsDislikesEntity> likesEntityFactory,
       ScriptBoardsRepository scriptBoardsRepository) {
-    this.template = new LikesServiceImplTemplate<ScriptBoardsLikesEntity>(
+    this.template = new LikesServiceImplTemplate<ScriptBoardsDislikesEntity>(
         envUtil, likesRepository, scriptBoardsRepository, likesEntityFactory);
   }
 
