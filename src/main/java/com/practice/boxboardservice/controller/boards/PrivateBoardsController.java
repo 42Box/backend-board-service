@@ -27,7 +27,7 @@ public class PrivateBoardsController {
   private final ServiceBoardsService serviceBoardsService;
   ;
 
-  @PostMapping("/script-boards/{boardId}")
+  @PostMapping("/script-boards/{boardId}/comments")
   public ResponseEntity<Void> newScriptBoardComment(@PathVariable long boardId) {
     try {
       scriptBoardsService.newScriptBoardComment(boardId);
@@ -39,7 +39,7 @@ public class PrivateBoardsController {
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
-  @DeleteMapping("/script-boards/{boardId}")
+  @DeleteMapping("/script-boards/{boardId/comments")
   public ResponseEntity<Void> deleteScriptBoardComment(@PathVariable long boardId) {
     try {
       scriptBoardsService.deleteScriptBoardComment(boardId);
@@ -51,7 +51,7 @@ public class PrivateBoardsController {
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
-  @PostMapping("/service-boards/{boardId}")
+  @PostMapping("/service-boards/{boardId}/comments")
   public ResponseEntity<Void> newServiceBoardComment(@PathVariable long boardId) {
     try {
       serviceBoardsService.newServiceBoardComment(boardId);
@@ -63,7 +63,7 @@ public class PrivateBoardsController {
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
-  @DeleteMapping("/service-boards/{boardId}")
+  @DeleteMapping("/service-boards/{boardId}/comments")
   public ResponseEntity<Void> deleteServiceBoardComment(@PathVariable long boardId) {
     try {
       serviceBoardsService.deleteServiceBoardComment(boardId);
