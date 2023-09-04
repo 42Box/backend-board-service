@@ -22,10 +22,12 @@ import com.practice.boxboardservice.service.boards.script_boards.dto.UpdateScrip
 import com.practice.boxboardservice.service.dto.DeleteBoardsDto;
 import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
 import com.practice.boxboardservice.service.boards.script_boards.dto.GetScriptBoardsDto;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -159,5 +161,19 @@ public class ScriptBoardsService {
   public Page<ScriptBoardsPageResultDto> findBoards(Pageable pageable,
       ScriptBoardsPageConditionDto conditionDto) {
     return scriptBoardsRepository.findScriptBoardsPage(pageable, conditionDto);
+  }
+
+  public void newScriptBoardComment(long boardId) {
+    ScriptBoardsEntity scriptBoardsEntity = scriptBoardsRepository.findByIdAndDeleted(boardId,
+        false).orElseThrow(NoSuchElementException::new);
+    scriptBoardsEntity.addCommentCount();
+    scriptBoardsRepository.save(scriptBoardsEntity);
+  }
+
+  public void deleteScriptBoardComment(long boardId) {
+    ScriptBoardsEntity scriptBoardsEntity = scriptBoardsRepository.findByIdAndDeleted(boardId,
+        false).orElseThrow(NoSuchElementException::new);
+    scriptBoardsEntity.decreaseCommentCount();
+    scriptBoardsRepository.save(scriptBoardsEntity);
   }
 }

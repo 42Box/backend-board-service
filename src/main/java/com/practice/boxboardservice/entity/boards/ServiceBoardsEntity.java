@@ -119,4 +119,12 @@ public class ServiceBoardsEntity extends BaseEntity implements BoardsEntity {
   public void deletePath() {
     this.imagePath = "";
   }
+
+  public void addCommentCount() {
+    this.commentCount++;
+  }
+
+  public void decreaseCommentCount() {
+    this.commentCount--;
+  }
 }

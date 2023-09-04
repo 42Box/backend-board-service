@@ -123,4 +123,12 @@ public class ScriptBoardsEntity extends BaseEntity implements BoardsEntity {
   public void increaseDislikes() {
     this.dislikeCount++;
   }
+
+  public void addCommentCount() {
+    this.commentCount++;
+  }
+
+  public void decreaseCommentCount() {
+    this.commentCount--;
+  }
 }
