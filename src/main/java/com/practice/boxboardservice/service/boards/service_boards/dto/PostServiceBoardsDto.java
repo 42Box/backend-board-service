@@ -22,10 +22,12 @@ public class PostServiceBoardsDto extends PostBoardsDto {
   private String writerUuid;
   private String writerNickname;
   private String writerProfileImagePath;
+  private String serviceName;
   private MultipartFile ImageFile;
 
-  public PostServiceBoardsDto(String title, String content, String serviceUrl) {
+  public PostServiceBoardsDto(String title, String content, String serviceUrl, String serviceName) {
     super(title, content);
     this.serviceUrl = serviceUrl;
+    this.serviceName = serviceName;
   }
 }

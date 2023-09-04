@@ -86,6 +86,7 @@ public class ServiceBoardsService {
     return ServiceBoardsEntity.builder()
         .title(dto.getTitle())
         .content(dto.getContent())
+        .serviceName(dto.getServiceName())
         .serviceUrl(dto.getServiceUrl())
         .imagePath(dto.getImagePath())
         .writerUuid(dto.getWriterUuid())

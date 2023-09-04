@@ -16,6 +16,7 @@ public class ServiceBoardsPageResultDto {
   private final Long boardId;
   private final String title;
   private final String content;
+  private final String serviceName;
   private final String writerUuid;
   private final String writerName;
   private final String writerProfileImagePath;
@@ -27,13 +28,15 @@ public class ServiceBoardsPageResultDto {
   private final LocalDateTime modDate;
 
   @QueryProjection
-  public ServiceBoardsPageResultDto(Long boardId, String title, String content, String writerUuid,
-      String writerName, String writerProfileImagePath, int viewCount, int likeCount,
+  public ServiceBoardsPageResultDto(Long boardId, String title, String content, String serviceName,
+      String writerUuid, String writerName, String writerProfileImagePath, int viewCount,
+      int likeCount,
       int dislikeCount, int commentCount, LocalDateTime regDate,
       LocalDateTime modDate) {
     this.boardId = boardId;
     this.title = title;
     this.content = content;
+    this.serviceName = serviceName;
     this.writerUuid = writerUuid;
     this.writerName = writerName;
     this.writerProfileImagePath = writerProfileImagePath;

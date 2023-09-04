@@ -42,6 +42,9 @@ public class ServiceBoardsEntity extends BaseEntity implements BoardsEntity {
   @Column(name = "service_board_content", nullable = false, columnDefinition = "VARCHAR(2000)")
   private String content;
 
+  @Column(name = "service_board_service_name", nullable = false, columnDefinition = "VARCHAR(255)")
+  private String serviceName;
+
   @Column(name = "service_board_service_url", nullable = false, columnDefinition = "VARCHAR(255)")
   private String serviceUrl;
 
@@ -74,9 +77,10 @@ public class ServiceBoardsEntity extends BaseEntity implements BoardsEntity {
 
   @Builder
   public ServiceBoardsEntity(String title, String content, String serviceUrl, String imagePath,
-      String writerUuid, String writerNickname, String writerProfileImagePath) {
+      String writerUuid, String writerNickname, String writerProfileImagePath, String serviceName) {
     this.title = title;
     this.content = content;
+    this.serviceName = serviceName;
     this.serviceUrl = serviceUrl;
     this.imagePath = imagePath;
     this.writerUuid = writerUuid;
@@ -92,6 +96,7 @@ public class ServiceBoardsEntity extends BaseEntity implements BoardsEntity {
   public void update(UpdateServiceBoardsDto dto, String imagePath) {
     this.title = dto.getTitle();
     this.content = dto.getContent();
+    this.serviceName = dto.getServiceName();
     this.serviceUrl = dto.getServiceUrl();
     this.imagePath = imagePath;
   }

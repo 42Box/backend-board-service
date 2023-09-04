@@ -22,8 +22,14 @@ public class RequestPostServiceBoardsDto extends RequestPostBoardsDto {
   @Length(min = 1, max = 255)
   private String serviceUrl;
 
-  public RequestPostServiceBoardsDto(String title, String content, String serviceUrl) {
+  @NotEmpty
+  @Length(min = 1, max = 255)
+  private String serviceName;
+
+  public RequestPostServiceBoardsDto(String title, String content, String serviceUrl,
+      String serviceName) {
     super(title, content);
     this.serviceUrl = serviceUrl;
+    this.serviceName = serviceName;
   }
 }

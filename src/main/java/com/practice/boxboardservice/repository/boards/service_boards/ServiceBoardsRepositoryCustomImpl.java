@@ -67,6 +67,7 @@ public class ServiceBoardsRepositoryCustomImpl implements ServiceBoardsRepositor
                 serviceBoardsEntity.id,
                 serviceBoardsEntity.title,
                 serviceBoardsEntity.content,
+                serviceBoardsEntity.serviceName,
                 serviceBoardsEntity.writerUuid,
                 serviceBoardsEntity.writerNickname,
                 serviceBoardsEntity.writerProfileImagePath,
