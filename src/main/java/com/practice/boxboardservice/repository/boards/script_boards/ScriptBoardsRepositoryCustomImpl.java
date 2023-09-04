@@ -55,6 +55,10 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
     return new OrderSpecifier<>(Order.DESC, scriptBoardsEntity.regDate);
   }
 
+  private OrderSpecifier<?> subSort() {
+    return new OrderSpecifier<>(Order.DESC, scriptBoardsEntity.regDate);
+  }
+
   @Override
   public Page<ScriptBoardsPageResultDto> findScriptBoardsPage(Pageable pageable,
       ScriptBoardsPageConditionDto condition) {
@@ -85,7 +89,8 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
             scriptBoardsEntity.deleted.eq(false)
         )
         .orderBy(
-            mainSort(pageable)
+            mainSort(pageable),
+            subSort()
         )
         .offset((long) pageable.getPageNumber() * pageable.getPageSize())
         .limit(pageable.getPageSize())
