@@ -22,13 +22,18 @@ import com.practice.boxboardservice.service.boards.script_boards.dto.UpdateScrip
 import com.practice.boxboardservice.service.dto.DeleteBoardsDto;
 import com.practice.boxboardservice.service.dto.UpdateBoardsDto;
 import com.practice.boxboardservice.service.boards.script_boards.dto.GetScriptBoardsDto;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.PersistenceContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * ScriptBoardsService.
@@ -47,6 +52,8 @@ public class ScriptBoardsService {
   private final ModelMapper modelMapper;
   private final EnvUtil envUtil;
   private final UsersClient usersClient;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public ScriptBoardsService(ScriptBoardsRepository scriptBoardsRepository,
       ScriptBoardsLikesRepository likesRepository,
@@ -163,16 +170,24 @@ public class ScriptBoardsService {
     return scriptBoardsRepository.findScriptBoardsPage(pageable, conditionDto);
   }
 
+  @Transactional(rollbackFor = IOException.class)
   public void newScriptBoardComment(long boardId) {
-    ScriptBoardsEntity scriptBoardsEntity = scriptBoardsRepository.findByIdAndDeleted(boardId,
-        false).orElseThrow(NoSuchElementException::new);
+    ScriptBoardsEntity scriptBoardsEntity = scriptBoardsEntity = entityManager.find(
+        ScriptBoardsEntity.class, boardId, LockModeType.PESSIMISTIC_WRITE);
+    if (scriptBoardsEntity == null || scriptBoardsEntity.isDeleted()) {
+      throw new NoSuchElementException();
+    }
     scriptBoardsEntity.addCommentCount();
     scriptBoardsRepository.save(scriptBoardsEntity);
   }
 
+  @Transactional(rollbackFor = IOException.class)
   public void deleteScriptBoardComment(long boardId) {
-    ScriptBoardsEntity scriptBoardsEntity = scriptBoardsRepository.findByIdAndDeleted(boardId,
-        false).orElseThrow(NoSuchElementException::new);
+    ScriptBoardsEntity scriptBoardsEntity = entityManager.find(ScriptBoardsEntity.class, boardId,
+        LockModeType.PESSIMISTIC_WRITE);
+    if (scriptBoardsEntity == null || scriptBoardsEntity.isDeleted()) {
+      throw new NoSuchElementException();
+    }
     scriptBoardsEntity.decreaseCommentCount();
     scriptBoardsRepository.save(scriptBoardsEntity);
   }

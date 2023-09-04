@@ -1,6 +1,5 @@
 package com.practice.boxboardservice.service.boards.service_boards;
 
-import com.practice.boxboardservice.entity.boards.ScriptBoardsEntity;
 import com.practice.boxboardservice.entity.boards.ServiceBoardsEntity;
 import com.practice.boxboardservice.entity.likes.ServiceBoardsDislikesEntity;
 import com.practice.boxboardservice.entity.likes.ServiceBoardsLikesEntity;
@@ -21,10 +20,12 @@ import com.practice.boxboardservice.service.boards.service_boards.dto.UpdateServ
 import com.practice.boxboardservice.service.dto.DeleteBoardsDto;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.PersistenceContext;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +46,8 @@ public class ServiceBoardsService {
   private final S3Service s3Service;
   private final ModelMapper modelMapper;
   private final EnvUtil envUtil;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   public ServiceBoardsService(ServiceBoardsRepository serviceBoardsRepository,
       ServiceBoardsLikesRepository likesRepository,
@@ -173,15 +176,21 @@ public class ServiceBoardsService {
   }
 
   public void newServiceBoardComment(long boardId) {
-    ServiceBoardsEntity serviceBoardsEntity = serviceBoardsRepository.findByIdAndDeleted(boardId,
-        false).orElseThrow(NoSuchElementException::new);
+    ServiceBoardsEntity serviceBoardsEntity = entityManager.find(ServiceBoardsEntity.class, boardId,
+        LockModeType.PESSIMISTIC_WRITE);
+    if (serviceBoardsEntity == null || serviceBoardsEntity.isDeleted()) {
+      throw new NoSuchElementException();
+    }
     serviceBoardsEntity.addCommentCount();
     serviceBoardsRepository.save(serviceBoardsEntity);
   }
 
   public void deleteServiceBoardComment(long boardId) {
-    ServiceBoardsEntity serviceBoardsEntity = serviceBoardsRepository.findByIdAndDeleted(boardId,
-        false).orElseThrow(NoSuchElementException::new);
+    ServiceBoardsEntity serviceBoardsEntity = entityManager.find(ServiceBoardsEntity.class, boardId,
+        LockModeType.PESSIMISTIC_WRITE);
+    if (serviceBoardsEntity == null || serviceBoardsEntity.isDeleted()) {
+      throw new NoSuchElementException();
+    }
     serviceBoardsEntity.decreaseCommentCount();
     serviceBoardsRepository.save(serviceBoardsEntity);
   }
