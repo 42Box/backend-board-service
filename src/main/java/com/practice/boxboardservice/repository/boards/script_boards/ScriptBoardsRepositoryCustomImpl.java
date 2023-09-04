@@ -77,6 +77,7 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
         ).from(scriptBoardsEntity)
         .where(
             writerUuidCondition(condition),
+            allSearchCondition(condition),
             titleSearch(condition),
             contentSearch(condition),
             nicknameSearch(condition),
@@ -94,6 +95,7 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
         .selectFrom(scriptBoardsEntity)
         .where(
             writerUuidCondition(condition),
+            allSearchCondition(condition),
             titleSearch(condition),
             contentSearch(condition),
             nicknameSearch(condition),
@@ -109,37 +111,44 @@ public class ScriptBoardsRepositoryCustomImpl implements ScriptBoardsRepositoryC
         : scriptBoardsEntity.writerUuid.eq(condition.getWriterUuid());
   }
 
+  private BooleanExpression allSearchCondition(ScriptBoardsPageConditionDto condition) {
+    if (!condition.getSearch().isEmpty()
+        && condition.getSearchCondition() == ScriptSearchCondition.ALL) {
+      return scriptBoardsEntity.title.contains(condition.getSearch())
+          .or(scriptBoardsEntity.content.contains(condition.getSearch()))
+          .or(scriptBoardsEntity.writerNickname.contains(condition.getSearch()))
+          .or(scriptBoardsEntity.scriptName.contains(condition.getSearch()));
+    }
+    return null;
+  }
+
   private BooleanExpression titleSearch(ScriptBoardsPageConditionDto condition) {
-    if (!condition.getSearch().isEmpty() && (
-        condition.getSearchCondition() == ScriptSearchCondition.ALL
-            || condition.getSearchCondition() == ScriptSearchCondition.TITLE)) {
+    if (!condition.getSearch().isEmpty()
+        && (condition.getSearchCondition() == ScriptSearchCondition.TITLE)) {
       return scriptBoardsEntity.title.contains(condition.getSearch());
     }
     return null;
   }
 
   private BooleanExpression contentSearch(ScriptBoardsPageConditionDto condition) {
-    if (!condition.getSearch().isEmpty() && (
-        condition.getSearchCondition() == ScriptSearchCondition.ALL
-            || condition.getSearchCondition() == ScriptSearchCondition.CONTENT)) {
+    if (!condition.getSearch().isEmpty()
+        && (condition.getSearchCondition() == ScriptSearchCondition.CONTENT)) {
       return scriptBoardsEntity.content.contains(condition.getSearch());
     }
     return null;
   }
 
   private BooleanExpression nicknameSearch(ScriptBoardsPageConditionDto condition) {
-    if (!condition.getSearch().isEmpty() && (
-        condition.getSearchCondition() == ScriptSearchCondition.ALL
-            || condition.getSearchCondition() == ScriptSearchCondition.WRITER_NICKNAME)) {
+    if (!condition.getSearch().isEmpty()
+        && (condition.getSearchCondition() == ScriptSearchCondition.WRITER_NICKNAME)) {
       return scriptBoardsEntity.writerNickname.contains(condition.getSearch());
     }
     return null;
   }
 
   private BooleanExpression scriptSearch(ScriptBoardsPageConditionDto condition) {
-    if (!condition.getSearch().isEmpty() && (
-        condition.getSearchCondition() == ScriptSearchCondition.ALL
-            || condition.getSearchCondition() == ScriptSearchCondition.SCRIPT_NAME)) {
+    if (!condition.getSearch().isEmpty()
+        && (condition.getSearchCondition() == ScriptSearchCondition.SCRIPT_NAME)) {
       return scriptBoardsEntity.scriptName.contains(condition.getSearch());
     }
     return null;

@@ -1,7 +1,6 @@
 package com.practice.boxboardservice.repository.boards.service_boards;
 
 
-import static com.practice.boxboardservice.entity.boards.QScriptBoardsEntity.scriptBoardsEntity;
 import static com.practice.boxboardservice.entity.boards.QServiceBoardsEntity.serviceBoardsEntity;
 
 import com.practice.boxboardservice.entity.boards.ServiceBoardsEntity;
@@ -23,7 +22,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 
 /**
- * ScriptBoardsRepositoryCustomImpl.
+ * ServiceBoardsRepositoryCustomImpl.
  *
  * @author : middlefitting
  * @since : 2023/08/30
@@ -77,6 +76,7 @@ public class ServiceBoardsRepositoryCustomImpl implements ServiceBoardsRepositor
         ).from(serviceBoardsEntity)
         .where(
             writerUuidCondition(condition),
+            allSearchCondition(condition),
             titleSearch(condition),
             contentSearch(condition),
             nicknameSearch(condition),
@@ -94,6 +94,7 @@ public class ServiceBoardsRepositoryCustomImpl implements ServiceBoardsRepositor
         .selectFrom(serviceBoardsEntity)
         .where(
             writerUuidCondition(condition),
+            allSearchCondition(condition),
             titleSearch(condition),
             contentSearch(condition),
             nicknameSearch(condition),
@@ -109,37 +110,44 @@ public class ServiceBoardsRepositoryCustomImpl implements ServiceBoardsRepositor
         : serviceBoardsEntity.writerUuid.eq(condition.getWriterUuid());
   }
 
+  private BooleanExpression allSearchCondition(ServiceBoardsPageConditionDto condition) {
+    if (!condition.getSearch().isEmpty()
+        && (condition.getSearchCondition() == ServiceSearchCondition.ALL)) {
+      return serviceBoardsEntity.title.contains(condition.getSearch())
+          .or(serviceBoardsEntity.content.contains(condition.getSearch()))
+          .or(serviceBoardsEntity.writerNickname.contains(condition.getSearch()))
+          .or(serviceBoardsEntity.serviceUrl.contains(condition.getSearch()));
+    }
+    return null;
+  }
+
   private BooleanExpression titleSearch(ServiceBoardsPageConditionDto condition) {
-    if (!condition.getSearch().isEmpty() && (
-        condition.getSearchCondition() == ServiceSearchCondition.ALL
-            || condition.getSearchCondition() == ServiceSearchCondition.TITLE)) {
+    if (!condition.getSearch().isEmpty()
+        && (condition.getSearchCondition() == ServiceSearchCondition.TITLE)) {
       return serviceBoardsEntity.title.contains(condition.getSearch());
     }
     return null;
   }
 
   private BooleanExpression contentSearch(ServiceBoardsPageConditionDto condition) {
-    if (!condition.getSearch().isEmpty() && (
-        condition.getSearchCondition() == ServiceSearchCondition.ALL
-            || condition.getSearchCondition() == ServiceSearchCondition.CONTENT)) {
+    if (!condition.getSearch().isEmpty() &&
+        (condition.getSearchCondition() == ServiceSearchCondition.CONTENT)) {
       return serviceBoardsEntity.content.contains(condition.getSearch());
     }
     return null;
   }
 
   private BooleanExpression nicknameSearch(ServiceBoardsPageConditionDto condition) {
-    if (!condition.getSearch().isEmpty() && (
-        condition.getSearchCondition() == ServiceSearchCondition.ALL
-            || condition.getSearchCondition() == ServiceSearchCondition.WRITER_NICKNAME)) {
+    if (!condition.getSearch().isEmpty() &&
+        (condition.getSearchCondition() == ServiceSearchCondition.WRITER_NICKNAME)) {
       return serviceBoardsEntity.writerNickname.contains(condition.getSearch());
     }
     return null;
   }
 
   private BooleanExpression serviceUrlSearch(ServiceBoardsPageConditionDto condition) {
-    if (!condition.getSearch().isEmpty() && (
-        condition.getSearchCondition() == ServiceSearchCondition.ALL
-            || condition.getSearchCondition() == ServiceSearchCondition.SERVICE_URL)) {
+    if (!condition.getSearch().isEmpty() &&
+        (condition.getSearchCondition() == ServiceSearchCondition.SERVICE_URL)) {
       return serviceBoardsEntity.serviceUrl.contains(condition.getSearch());
     }
     return null;
