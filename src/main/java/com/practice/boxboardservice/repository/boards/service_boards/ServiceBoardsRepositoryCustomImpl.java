@@ -55,6 +55,10 @@ public class ServiceBoardsRepositoryCustomImpl implements ServiceBoardsRepositor
     return new OrderSpecifier<>(Order.DESC, serviceBoardsEntity.regDate);
   }
 
+  private OrderSpecifier<?> subSort() {
+    return new OrderSpecifier<>(Order.DESC, serviceBoardsEntity.regDate);
+  }
+
   @Override
   public Page<ServiceBoardsPageResultDto> findBoardsPage(Pageable pageable,
       ServiceBoardsPageConditionDto condition) {
@@ -84,7 +88,8 @@ public class ServiceBoardsRepositoryCustomImpl implements ServiceBoardsRepositor
             serviceBoardsEntity.deleted.eq(false)
         )
         .orderBy(
-            mainSort(pageable)
+            mainSort(pageable),
+            subSort()
         )
         .offset((long) pageable.getPageNumber() * pageable.getPageSize())
         .limit(pageable.getPageSize())
