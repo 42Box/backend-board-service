@@ -1,5 +1,6 @@
 package com.practice.boxboardservice.service.boards.service_boards;
 
+import com.practice.boxboardservice.entity.boards.ScriptBoardsEntity;
 import com.practice.boxboardservice.entity.boards.ServiceBoardsEntity;
 import com.practice.boxboardservice.entity.likes.ServiceBoardsDislikesEntity;
 import com.practice.boxboardservice.entity.likes.ServiceBoardsLikesEntity;
@@ -18,10 +19,12 @@ import com.practice.boxboardservice.service.boards.service_boards.dto.GetService
 import com.practice.boxboardservice.service.boards.service_boards.dto.PostServiceBoardsDto;
 import com.practice.boxboardservice.service.boards.service_boards.dto.UpdateServiceBoardsDto;
 import com.practice.boxboardservice.service.dto.DeleteBoardsDto;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -167,5 +170,19 @@ public class ServiceBoardsService {
   public Page<ServiceBoardsPageResultDto> findBoards(Pageable pageable,
       ServiceBoardsPageConditionDto conditionDto) {
     return serviceBoardsRepository.findBoardsPage(pageable, conditionDto);
+  }
+
+  public void newServiceBoardComment(long boardId) {
+    ServiceBoardsEntity serviceBoardsEntity = serviceBoardsRepository.findByIdAndDeleted(boardId,
+        false).orElseThrow(NoSuchElementException::new);
+    serviceBoardsEntity.addCommentCount();
+    serviceBoardsRepository.save(serviceBoardsEntity);
+  }
+
+  public void deleteServiceBoardComment(long boardId) {
+    ServiceBoardsEntity serviceBoardsEntity = serviceBoardsRepository.findByIdAndDeleted(boardId,
+        false).orElseThrow(NoSuchElementException::new);
+    serviceBoardsEntity.decreaseCommentCount();
+    serviceBoardsRepository.save(serviceBoardsEntity);
   }
 }
