@@ -20,4 +20,5 @@ public class UpdateServiceBoardsDto extends PostBoardsDto {
 
   protected Long BoardId;
   protected String serviceUrl;
+  protected String serviceName;
 }

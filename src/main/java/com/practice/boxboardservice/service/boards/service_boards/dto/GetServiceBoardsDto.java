@@ -19,6 +19,7 @@ public class GetServiceBoardsDto {
   private Long boardId;
   private String title;
   private String content;
+  private String serviceName;
   private String serviceUrl;
   private String imagePath;
   private String writerUuid;
