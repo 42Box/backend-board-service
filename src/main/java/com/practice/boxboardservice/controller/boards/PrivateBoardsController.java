@@ -39,7 +39,7 @@ public class PrivateBoardsController {
     return ResponseEntity.status(HttpStatus.OK).build();
   }
 
-  @DeleteMapping("/script-boards/{boardId/comments")
+  @DeleteMapping("/script-boards/{boardId}/comments")
   public ResponseEntity<Void> deleteScriptBoardComment(@PathVariable long boardId) {
     try {
       scriptBoardsService.deleteScriptBoardComment(boardId);
