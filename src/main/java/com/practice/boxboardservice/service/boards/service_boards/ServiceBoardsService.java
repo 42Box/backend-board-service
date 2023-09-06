@@ -18,6 +18,7 @@ import com.practice.boxboardservice.service.boards.service_boards.dto.GetService
 import com.practice.boxboardservice.service.boards.service_boards.dto.PostServiceBoardsDto;
 import com.practice.boxboardservice.service.boards.service_boards.dto.UpdateServiceBoardsDto;
 import com.practice.boxboardservice.service.dto.DeleteBoardsDto;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import javax.persistence.EntityManager;
@@ -176,6 +177,7 @@ public class ServiceBoardsService {
     return serviceBoardsRepository.findBoardsPage(pageable, conditionDto);
   }
 
+  @Transactional(rollbackFor = IOException.class)
   public void newServiceBoardComment(long boardId) {
     ServiceBoardsEntity serviceBoardsEntity = entityManager.find(ServiceBoardsEntity.class, boardId,
         LockModeType.PESSIMISTIC_WRITE);
@@ -186,6 +188,7 @@ public class ServiceBoardsService {
     serviceBoardsRepository.save(serviceBoardsEntity);
   }
 
+  @Transactional(rollbackFor = IOException.class)
   public void deleteServiceBoardComment(long boardId) {
     ServiceBoardsEntity serviceBoardsEntity = entityManager.find(ServiceBoardsEntity.class, boardId,
         LockModeType.PESSIMISTIC_WRITE);
